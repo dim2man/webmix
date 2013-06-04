@@ -8,7 +8,7 @@ define(["jquery"], function($) {
         updateFunc.call($(this));
       }
       finally {
-        if(next != null) {
+        if(next !== null) {
           parent.insertBefore(this, next);
         }
         else {
