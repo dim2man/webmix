@@ -3,32 +3,7 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-    requirejs: {
-      compile: {
-        options: {
-          baseUrl: "js",
-          name: "main",
-          paths: {
-            "jquery": "empty:",
-            "jquerymobile": "empty:",
-            "underscore": "empty:",
-            "backbone": "empty:",
-            "pure": "empty:",
-            "update": "plugins/jquery.update"
-          },
-          out: "build/js/main.js"
-        }
-      }
-    },
-    uglify: {
-      options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-      },
-      build: {
-        src: 'build/js/main.js',
-        dest: 'build/js/main.min.js'
-      }
-    },
+    clean: ['build'],
     jshint: {
       // define the files to lint
       files: ['Gruntfile.js', 'js/**/*.js', 'test/**/*.js'],
@@ -53,15 +28,73 @@ module.exports = function(grunt) {
           trailing: true
         }
       }
+    },
+    requirejs: {
+      compile: {
+        options: {
+          baseUrl: "js",
+          name: "main",
+          //name: "../libsrc/almond",
+          //include: ["main"],
+          //insertRequire: ["main"],
+          //wrap: true,
+          paths: {
+            "jquery": "empty:",
+            "jquerymobile": "empty:",
+            "underscore": "empty:",
+            "backbone": "empty:",
+            "pure": "empty:",
+            "update": "plugins/jquery.update"
+          },
+          out: "build/js/main.js"
+        }
+      }
+    },
+    cssmin: {
+      minify: {
+        expand: true,
+        cwd: 'css/',
+        src: ['**/*.css'],
+        dest: 'build/css/',
+        ext: '.css'
+      }
+    },
+    copy: {
+      main: {
+        files: [
+          {expand: true, src: ['index.html'], dest: 'build/'},
+          {expand: true, src: ['css/**/images/**'], dest: 'build/'},
+          {expand: true, src: ['lib/**'], dest: 'build/'}
+        ]
+      }
+    },
+    manifest: {
+      generate: {
+        options: {
+          basePath: 'build/',
+          //cache: ['js/app.js', 'css/style.css'],
+          //network: ['http://*', 'https://*'],
+          //fallback: ['/ /offline.html'],
+          //exclude: ['js/jquery.min.js'],
+          //preferOnline: true,
+          verbose: true,
+          timestamp: true
+        },
+        src: ['**/*.*'],
+        dest: 'build/cache.manifest'
+      }
     }
   });
 
-  // Load the plugin that provides the "uglify" task.
-  //grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-requirejs');
+  // Load plugins
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-requirejs');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-manifest');
 
-  // Default task(s).
-  grunt.registerTask('default', ['jshint', 'requirejs'/*, 'uglify'*/]);
+  // Default task
+  grunt.registerTask('default', ['clean', 'jshint', 'requirejs', 'cssmin', 'copy', 'manifest']);
 
 };
