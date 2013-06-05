@@ -3,7 +3,6 @@ webmix
 
 A mix of technologies and boiler plate for single-page web application.
 
-
 Grunt setup
 ===========
 See http://gruntjs.com/getting-started
