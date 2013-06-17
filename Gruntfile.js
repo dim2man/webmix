@@ -1,4 +1,4 @@
-module.exports = function(grunt) {
+module.exports=function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
@@ -34,10 +34,10 @@ module.exports = function(grunt) {
         options: {
           baseUrl: "js",
           name: "main",
-          //name: "../libsrc/almond",
-          //include: ["main"],
-          //insertRequire: ["main"],
-          //wrap: true,
+          // name: "../libsrc/almond",
+          // include: ["main"],
+          // insertRequire: ["main"],
+          // wrap: true,
           paths: {
             "jquery": "empty:",
             "jquerymobile": "empty:",
@@ -61,28 +61,39 @@ module.exports = function(grunt) {
     },
     copy: {
       main: {
-        files: [
-          {expand: true, src: ['index.html'], dest: 'build/'},
-          {expand: true, src: ['css/**/images/**'], dest: 'build/'},
-          {expand: true, src: ['lib/**'], dest: 'build/'}
-        ]
+        files: [{
+          expand: true,
+          src: ['index.html'],
+          dest: 'build/'
+        }, {
+          expand: true,
+          src: ['css/**/images/**'],
+          dest: 'build/'
+        }, {
+          expand: true,
+          src: ['lib/**'],
+          dest: 'build/'
+        }]
       }
     },
     manifest: {
       generate: {
         options: {
           basePath: 'build/',
-          //cache: ['js/app.js', 'css/style.css'],
-          //network: ['http://*', 'https://*'],
-          //fallback: ['/ /offline.html'],
-          //exclude: ['js/jquery.min.js'],
-          //preferOnline: true,
+          // cache: ['js/app.js', 'css/style.css'],
+          // network: ['http://*', 'https://*'],
+          // fallback: ['/ /offline.html'],
+          // exclude: ['js/jquery.min.js'],
+          // preferOnline: true,
           verbose: true,
           timestamp: true
         },
         src: ['**/*.*'],
         dest: 'build/cache.manifest'
       }
+    },
+    qunit: {
+      all: ['test/**/*.html']
     }
   });
 
@@ -93,8 +104,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-manifest');
+  grunt.loadNpmTasks('grunt-contrib-qunit');
 
   // Default task
-  grunt.registerTask('default', ['clean', 'jshint', 'requirejs', 'cssmin', 'copy', 'manifest']);
+  grunt.registerTask('default', ['clean', 'jshint', 'requirejs', 'cssmin', 'copy', 'manifest', 'qunit']);
 
 };
