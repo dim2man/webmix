@@ -72,7 +72,10 @@ module.exports=function(grunt) {
         }, {
           expand: true,
           src: ['lib/**'],
-          dest: 'build/'
+          dest: 'build/',
+          filter: function(path) {
+            return path.search(/qunit/) == -1;
+          }
         }]
       }
     },
@@ -107,6 +110,6 @@ module.exports=function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-qunit');
 
   // Default task
-  grunt.registerTask('default', ['clean', 'jshint', 'requirejs', 'cssmin', 'copy', 'manifest', 'qunit']);
+  grunt.registerTask('default', ['jshint', 'qunit', 'clean', 'requirejs', 'cssmin', 'copy', 'manifest']);
 
 };
