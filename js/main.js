@@ -24,7 +24,8 @@ require.config({
 });
 
 // Includes File Dependencies
-require(["jquery", "backbone", "router"], function($, Backbone, Router) {
+define(["jquery", "backbone", "router"], function($, Backbone, Router) {
+  var exports = {};
 
   $(document).on("mobileinit", function() {
     // Prevents all anchor click handling including the addition of active button state and alternate link bluring.
@@ -39,6 +40,8 @@ require(["jquery", "backbone", "router"], function($, Backbone, Router) {
 
   require(["jquerymobile"], function() {
     // Instantiates a new Backbone.js Mobile Router
-    this.router = new Router();
+    exports.router = new Router();
   });
+  
+  return exports;
 });
