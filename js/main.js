@@ -34,6 +34,9 @@ define(["jquery", "backbone", "router"], function($, Backbone, Router) {
     // Disabling this will prevent jQuery Mobile from handling hash changes
     $.mobile.hashListeningEnabled = false;
     
+    // Disable animation for page transition
+    $.mobile.defaultPageTransition = "none";
+    
     document.body.style.visibility = "visible";
     console.log("Logo display time: "+(new Date()).valueOf());
   });

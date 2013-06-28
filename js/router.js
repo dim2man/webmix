@@ -1,5 +1,5 @@
 // Includes file dependencies
-define(["jquery", "backbone", "menu/menuView"], function($, Backbone, MenuView) {
+define(["jquery", "backbone", "menu/menuView", "menu/menuModel"], function($, Backbone, MenuView, menuModel) {
 
   // Extends Backbone.Router
   var Router = Backbone.Router.extend({
@@ -32,10 +32,6 @@ define(["jquery", "backbone", "menu/menuView"], function($, Backbone, MenuView) 
         })
       });*/
       
-      this.menuView = new MenuView({
-        el: '#menu'
-      });
-
       // Tells Backbone to start watching for hashchange events
       Backbone.history.start();
     },
@@ -53,13 +49,23 @@ define(["jquery", "backbone", "menu/menuView"], function($, Backbone, MenuView) 
     // Home method
     home: function() {
       console.log("Home route started");
-      //immediately route to menu
-      this.navigate("menu", {trigger: true});
+      //perform app initialization, model-view bindings
+      $.mobile.changePage("#logo", {
+        reverse: false,
+        changeHash: false
+      });
+      //route to menu
+      setTimeout(this.navigate.bind(this, "menu", {trigger: true}), 3000);
     },
     
     menu: function() {
       console.log("Menu route started");
-      this.menuView.render();
+      if(!this.menuView) {
+        this.menuView = new MenuView({
+          el: '#menu',
+          collection: menuModel
+        });
+      }
       $.mobile.changePage("#menu", {
         reverse: false,
         changeHash: false
