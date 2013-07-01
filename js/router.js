@@ -1,114 +1,82 @@
 // Includes file dependencies
-define(["jquery", "backbone", "menu/menuView", "menu/menuModel"], function($, Backbone, MenuView, menuModel) {
+define(["jquery", "backbone"], function($, Backbone) {
 
   // Extends Backbone.Router
   var Router = Backbone.Router.extend({
 
     // The Router constructor
     initialize: function() {
-
-      // Instantiates a new Animal Category View
-      /*
-      this.animalsView = new CategoryView({
-        el: "#animals",
-        collection: new CategoriesCollection([], {
-          type: "animals"
-        })
-      });
-
-      // Instantiates a new Colors Category View
-      this.colorsView = new CategoryView({
-        el: "#colors",
-        collection: new CategoriesCollection([], {
-          type: "colors"
-        })
-      });
-
-      // Instantiates a new Vehicles Category View
-      this.vehiclesView = new CategoryView({
-        el: "#vehicles",
-        collection: new CategoriesCollection([], {
-          type: "vehicles"
-        })
-      });*/
-      
       // Tells Backbone to start watching for hashchange events
       Backbone.history.start();
     },
 
     // Backbone.js Routes
     routes: {
-      // When there is no hash bang on the url, the home method is called
       "": "home",
-      "menu": "menu"
-
-      // When #category? is on the url, the category method is called
-      //"category?:type": "category"
+      "menu": "menu",
+      "menuitem(/:index)": "menuitem"
     },
 
     // Home method
     home: function() {
       console.log("Home route started");
-      //perform app initialization, model-view bindings
       $.mobile.changePage("#logo", {
         reverse: false,
         changeHash: false
       });
-      //route to menu
-      setTimeout(this.navigate.bind(this, "menu", {trigger: true}), 3000);
+      
+      //route to menu after some timeout
+      //setTimeout(this.navigate.bind(this, "menu", {trigger: true}), 3000);
+      this.navigate("menu", {trigger: true});
     },
     
     menu: function() {
-      console.log("Menu route started");
       if(!this.menuView) {
-        this.menuView = new MenuView({
-          el: '#menu',
-          collection: menuModel
-        });
-      }
-      $.mobile.changePage("#menu", {
-        reverse: false,
-        changeHash: false
-      });
-    },
-
-    // Category method that passes in the type that is appended to the url hash
-    category: function(type) {
-
-      // Stores the current Category View inside of the currentView variable
-      /*var currentView = this[type + "View"];
-
-      // If there are no collections in the current Category View
-      if (!currentView.collection.length) {
-
-        // Show's the jQuery Mobile loading icon
-        // $.mobile.loading( "show" );
-
-        // Fetches the Collection of Category Models for the current Category View
-        currentView.collection.fetch().done(function() {
-
-          // Programatically changes to the current categories page
-          $.mobile.changePage("#" + type, {
-            reverse: false,
-            changeHash: false
+        require(["menu/menuView", "menu/menuModel"], (function(MenuView, menuModel) {
+          this.menuView = new MenuView({
+            el: '#menu',
+            collection: menuModel
           });
-
-        });
-
+          this.menu();
+        }).bind(this));
       }
-
-      // If there already collections in the current Category View
       else {
-
-        // Programatically changes to the current categories page
-        $.mobile.changePage("#" + type, {
+        console.log("Menu route started");
+        $.mobile.changePage("#menu", {
           reverse: false,
           changeHash: false
         });
+      }
+    },
 
-      }*/
-
-    }
+    menuitem: function(index) {
+      if(!this.menuItemView) {
+        require(["menu/menuItemView"], (function(MenuItemView) {
+          this.menuItemView = new MenuItemView({
+            el: '#menuItem'
+          });
+          this.menuitem(index);
+        }).bind(this));
+      }
+      else {
+        console.log("Menu item route started, index: "+index);
+        require(["menu/menuModel"], (function(menuModel) {
+          if(index !== undefined) {
+            index = parseInt(index, 10);
+            this.menuItemView.model = index >= 0 ? menuModel.at(index) : null;
+          }
+          else {
+            this.menuItemView.model = null;
+          }
+          this.menuItemView.collection = menuModel;
+          this.menuItemView.render();
+          $.mobile.changePage("#menuItem", {
+            reverse: false,
+            changeHash: false
+          });
+        }).bind(this));
+      }
+    },
 
   });
 

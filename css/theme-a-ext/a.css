@@ -1,0 +1,7 @@
+/**
+ * Theme a extensions
+ */
+.ui-icon-red {
+	background-color: 						#f00;
+	background-color: 						rgba(255,0,0,.7);
+}

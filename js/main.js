@@ -2,7 +2,7 @@ require.config({
   paths: {
     // Libraries
     "jquery": "../lib/jquery-2.0.0.min",
-    "jquerymobile": "../lib/jquery.mobile-1.3.1.min",
+    "jquerymobile": "../libsrc/jquery.mobile-1.3.1",
     "underscore": "../lib/underscore-min",
     "backbone": "../lib/backbone-min",
     "pure": "../lib/pure_min",
