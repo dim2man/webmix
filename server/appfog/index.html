@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+window.onload=function() {
+  var messages = document.getElementsByTagName('pre')[0];
+  var input = document.getElementsByTagName('input')[0];
+  var websocket = new WebSocket('ws://webmix.eu01.aws.af.cm:8080'); //ws://webmix.eu01.aws.af.cm:8080
+  websocket.onopen = function(e) { 
+    input.onkeypress = function(e) {
+      if(e.keyCode == 13) {
+        websocket.send(input.value);
+        input.value = '';
+      }
+    }
+  };
+  websocket.onclose = function(e) { 
+    messages.innerHTML += 'Disconnected\n';
+  };
+  websocket.onmessage = function(e) {
+    messages.innerHTML += e.data + '\n';
+  };
+}
+</script>
+</head>
+<body>
+<input type="text"><br>
+<pre></pre>
+</body>
+</html>
