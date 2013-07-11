@@ -14,7 +14,9 @@ define(["jquery", "backbone"], function($, Backbone) {
     routes: {
       "": "home",
       "menu": "menu",
-      "menuitem(/:index)": "menuitem"
+      "menuitem(/:index)": "menuitem",
+      "input&t=(:title)&l=(:label)&v=(:val)&c=(:callback)": "inputText",
+      "wschat(&s=:server)": "wschat"
     },
 
     // Home method
@@ -32,7 +34,7 @@ define(["jquery", "backbone"], function($, Backbone) {
     
     menu: function() {
       if(!this.menuView) {
-        require(["menu/menuView", "menu/menuModel"], (function(MenuView, menuModel) {
+        require(["menu/listView", "menu/model"], (function(MenuView, menuModel) {
           this.menuView = new MenuView({
             el: '#menu',
             collection: menuModel
@@ -51,7 +53,7 @@ define(["jquery", "backbone"], function($, Backbone) {
 
     menuitem: function(index) {
       if(!this.menuItemView) {
-        require(["menu/menuItemView"], (function(MenuItemView) {
+        require(["menu/itemView"], (function(MenuItemView) {
           this.menuItemView = new MenuItemView({
             el: '#menuItem'
           });
@@ -60,7 +62,7 @@ define(["jquery", "backbone"], function($, Backbone) {
       }
       else {
         console.log("Menu item route started, index: "+index);
-        require(["menu/menuModel"], (function(menuModel) {
+        require(["menu/model"], (function(menuModel) {
           if(index !== undefined) {
             index = parseInt(index, 10);
             this.menuItemView.model = index >= 0 ? menuModel.at(index) : null;
@@ -77,6 +79,33 @@ define(["jquery", "backbone"], function($, Backbone) {
         }).bind(this));
       }
     },
+    
+    inputText: function(title, label, value, callback) {
+      if(!this.inputView) {
+        require(["input/view"], (function(inputView) {
+          this.inputView = inputView;
+          this.inputText(title, label, value, callback);
+        }).bind(this));
+      }
+      else {
+        this.inputView.setup(title, label, value, callback);
+        this.inputView.render();
+        $.mobile.changePage("#input", {
+          reverse: false,
+          changeHash: false
+        });
+      }
+    },
+    
+    wschat: function(server) {
+      if(!server) {
+        this.navigate("input&t=Enter server name&l=&v=value&c=wschat%26s%3D", {trigger: true, replace: true});
+      }
+      else {
+        alert(server);
+        this.navigate("", {trigger: true, replace: true});
+      }
+    }
 
   });
 

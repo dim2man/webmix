@@ -47,6 +47,9 @@ define(["backbone"], function(Backbone) {
     }, {
       text: 'menu',
       href: '#menu'
+    }, {
+      text: 'chat',
+      href: '#wschat'
     }],
     
   });

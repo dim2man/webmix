@@ -1,7 +1,7 @@
 var http = require('http');
 var ws = require('websocket');
 
-var wsPort = 8080;
+var wsPort = process.env.VCAP_APP_PORT || 9090;
 
 var wsHttpServer = http.createServer(function(request, response) {
   response.writeHead(404, {"X-WebSocket-Port": wsPort});
@@ -26,9 +26,3 @@ wsServer.on('connect', function(connection) {
         wsServer.broadcastUTF(id + ' disconnected');
     });
 });
-
-var httpServer = http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.end('wsServer is '+wsServer);
-}).listen(8081, null);
-

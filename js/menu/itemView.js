@@ -5,7 +5,7 @@ define(["backbone", "jquery", "pure", "update"], function(Backbone, $) {
 
     initialize: function() {
       this.$saveButton = $('[data-role="header"] a:eq(1)', this.$el);
-      this.$saveButton.on('click', this.save.bind(this));
+      this.$saveButton.on('tap', this.save.bind(this));
     },
 
     render: function() {

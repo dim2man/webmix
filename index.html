@@ -36,15 +36,28 @@
 <!-- The menu item -->
 <div id="menuItem" data-role="page" data-theme="a">
 	<div data-role="header">
-		<a href="#menu" data-icon="arrow-l" data-rel="back" class="ui-btn-left">Back</a>
+		<a href="javascript:history.back()" data-icon="arrow-l" data-rel="back" class="ui-btn-left">Back</a>
 		<h1>Edit Menu Item</h1>
-		<a href="#menu" data-icon="check" class="ui-btn-right ui-btn-active">Save</a>
+		<a href="javascript:history.back()" data-icon="check" class="ui-btn-right ui-btn-active">Save</a>
 	</div>
 	<div data-role="content">
 		<label for="menuItemText">Text:</label>
 		<input type="text" name="name" id="menuItemText" value="" />
 		<label for="menuItemHref">Link:</label>
 		<input type="text" name="name" id="menuItemHref" value="" />
+	</div>
+</div>
+
+<!-- The input dialog -->
+<div id="input" data-role="page" data-theme="a">
+	<div data-role="header">
+		<a href="javascript:history.back()" data-icon="arrow-l" data-rel="back" class="ui-btn-left">Back</a>
+		<h1></h1>
+		<a href="javascript:history.back()" data-icon="check" class="ui-btn-right ui-btn-active">Save</a>
+	</div>
+	<div data-role="content">
+		<label for="inputLabel"></label>
+		<input type="text" name="name" id="inputText" value="" />
 	</div>
 </div>
 

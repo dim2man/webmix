@@ -1,7 +1,7 @@
 //MenuView
 //========
 
-define(["backbone", "main", "menu/menuModel", "jquery", "pure", "update"], function(Backbone, main, menuModel, $) {
+define(["backbone", "main", "menu/model", "jquery", "pure", "update"], function(Backbone, main, menuModel, $) {
 
   // Extends Backbone.View
   var MenuView = Backbone.View.extend({
@@ -12,7 +12,7 @@ define(["backbone", "main", "menu/menuModel", "jquery", "pure", "update"], funct
       this.deleteItemBound = this.deleteItem.bind(this);
       this.$editButton = $('[data-role="header"] a', this.$el);
       this.$footer = $('[data-role="footer"]', this.$el);
-      this.$editButton.on("click", this.edit.bind(this));
+      this.$editButton.on("tap", this.edit.bind(this));
       this.$listview = $('ul[data-role="listview"]', this.$el);
       this.collection.on("add remove change", this.render, this); //binds render function when model changed
       this.render();
@@ -60,20 +60,20 @@ define(["backbone", "main", "menu/menuModel", "jquery", "pure", "update"], funct
       var $listItemActions = $('a', this.$listview); 
       var $listItemIcons = $('.ui-icon', this.$listview); 
       if(this.$editButton.hasClass('ui-btn-active')) {
-        $listItemActions.on('click', this.editItemBound);
+        $listItemActions.on('tap', this.editItemBound);
         $listItemIcons.removeClass('ui-icon-arrow-r')
           .addClass('ui-icon-minus')
           .addClass('ui-icon-red')
           .css('z-index', 2)
-          .on('click', this.deleteItemBound);
+          .on('tap', this.deleteItemBound);
       }
       else {
-        $listItemActions.off('click', this.editItemBound);
+        $listItemActions.off('tap', this.editItemBound);
         $listItemIcons.removeClass('ui-icon-minus')
           .removeClass('ui-icon-red')
           .addClass('ui-icon-arrow-r')
           .css('z-index', 0)
-          .off('click', this.deleteItemBound);
+          .off('tap', this.deleteItemBound);
       }
     },
     
